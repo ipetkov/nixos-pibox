@@ -1,0 +1,24 @@
+Don't need to constantly spam the disk with the current state
+Also we'll use systemd to manage the service instead of executing it directly
+diff --git a/pi_fan_hwpwm.c b/pi_fan_hwpwm.c
+index c7c8401..249b2b8 100644
+--- a/pi_fan_hwpwm.c
++++ b/pi_fan_hwpwm.c
+@@ -149,7 +149,7 @@ int main(int argc, char *argv[]) {
+ 
+   global_pid = getpid();
+   sprintf(buf, "%d\n", global_pid);
+-  run_write("/run/pi_fan_hwpwm.pid", buf);
++  // run_write("/run/pi_fan_hwpwm.pid", buf);
+ 
+   if(!bcm2835_init()) fatal(0, "bcm2835_init() failed");
+   if(pin==0 || pin==13) bcm2835_gpio_fsel(13, BCM2835_GPIO_FSEL_ALT0);
+@@ -170,7 +170,7 @@ int main(int argc, char *argv[]) {
+     if((loop%4) == 0) { // every second
+       fan_loop();
+       sprintf(buf, "Time: %us, Temp: %.2fc, Fan Speed: %.1f%%\n", loop/4, temp, (float)pwm_level/(float)MAX_FAN*100.);
+-      run_write("/run/pi_fan_hwpwm.state", buf);
++      // run_write("/run/pi_fan_hwpwm.state", buf);
+       if(verbose) fputs(buf, stdout);
+     }
+     usleep(250000);
