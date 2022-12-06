@@ -35,6 +35,8 @@ jobs:
         image: tonistiigi/binfmt:latest
         platforms: "arm64"
     - name: flake checks
+      run: nix flake check --keep-going --print-build-logs
+    - name: build packages
       run: nix build --keep-going --print-build-logs -f ./ci/packages.nix --argstr system aarch64-linux
 
   check-dead-code:
