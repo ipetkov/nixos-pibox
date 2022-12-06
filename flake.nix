@@ -33,14 +33,19 @@
           ./nixosModules/pwm-fan.nix
         ];
       };
-    } // flake-utils.lib.eachSystem [ "aarch64-linux" ] (system:
+    } // flake-utils.lib.eachDefaultSystem (system:
       let
+        pkgs = import nixpkgs {
+          inherit system;
+        };
       in
+      {
+        formatter = pkgs.nixpkgs-fmt;
+      }) // flake-utils.lib.eachSystem [ "aarch64-linux" ] (system:
       {
         packages = packagesFor (import nixpkgs {
           inherit system;
         });
-
         checks = self.packages.${system};
       }
     );

@@ -1,0 +1,57 @@
+name: "Test"
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - 'main'
+      - 'ci*' # Allow testing CI fixes without opening a PR
+
+permissions:
+  contents: read
+
+jobs:
+  tests-pass:
+    name: all systems go
+    runs-on: ubuntu-latest
+    steps:
+      - run: exit 0
+    needs:
+      - check-dead-code
+      - check-fmt
+      - tests
+
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: cachix/install-nix-action@v18
+      with:
+        extra_nix_config: |
+          extra-platforms = aarch64-linux
+    - name: install QEMU/binfmt
+      uses: docker/setup-qemu-action@v2
+      with:
+        image: tonistiigi/binfmt:latest
+        platforms: "arm64"
+    - name: flake checks
+      run: nix build --keep-going --print-build-logs -f ./ci/packages.nix --argstr system aarch64-linux
+
+  check-dead-code:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: cachix/install-nix-action@v18
+    - uses: cachix/cachix-action@v12
+      with:
+        name: deadnix
+    - name: check for dead code
+      run: nix run github:astro/deadnix -- .
+
+  check-fmt:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: cachix/install-nix-action@v18
+    - name: check formatting
+      run: nix fmt -- --check .

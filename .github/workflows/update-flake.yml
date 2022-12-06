@@ -1,0 +1,36 @@
+name: Update flake dependencies
+
+on:
+  workflow_dispatch: # for allowing manual triggers of the workflow
+  schedule:
+    - cron: '37 16 3 * *'
+
+permissions:
+  contents: read
+
+jobs:
+  update-and-push-deps:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: cachix/install-nix-action@v18
+    - name: Update flake.lock
+      id: flakeupdate
+      uses: DeterminateSystems/update-flake-lock@v15
+      with:
+        token: ${{ secrets.PAT_FLAKE_UPDATE }}
+        branch: "automation/flake-update"
+        pr-title: "Update flake.lock"
+        pr-labels: |
+          automated
+          dependencies
+          flake update
+    # Fine grained Personal Access Tokens do not yet work with GitHub's GraphQL API
+    # so we'll stick with manual approval for now
+    # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#about-personal-access-tokens
+    # - uses: peter-evans/enable-pull-request-automerge@v2
+    #   with:
+    #     token: ${{ secrets.PAT_FLAKE_UPDATE }}
+    #     pull-request-number: ${{ steps.flakeupdate.outputs.pull-request-number }}
+    #     merge-method: "squash"
+
