@@ -33,11 +33,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1670009809,
-        "narHash": "sha256-yt/dQ32Vz4WenDLu4XeHbnXFxiHbTcnU0WwiLW5Ce6c=",
+        "lastModified": 1672616430,
+        "narHash": "sha256-e18rRwDUaW/Uw1tBmtsVueJ2SVI5DLhrEGwhkIo+c50=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "660e7737851506374da39c0fa550c202c824a17c",
+        "rev": "0bf3109eeb61780965c27f4a0a4affdcd0cd4d3d",
         "type": "github"
       },
       "original": {
@@ -50,11 +50,11 @@
     "pibox-os": {
       "flake": false,
       "locked": {
-        "lastModified": 1669501749,
-        "narHash": "sha256-+xUB4X71DlEcLI14Tvjlu43khHhTu+g5A4DRNPbdHZA=",
+        "lastModified": 1670762146,
+        "narHash": "sha256-u/yqTwt7eJ8entHSXBKHDO512PuR0Wf8s4QO4FKy7uo=",
         "owner": "kubesail",
         "repo": "pibox-os",
-        "rev": "e2c68fab51c5d7ee69bb4cb04b80beae7869f6ec",
+        "rev": "d6f693f1ceb13168392b9b20cbe7d15efff1ebac",
         "type": "github"
       },
       "original": {
