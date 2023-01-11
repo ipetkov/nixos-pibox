@@ -41,6 +41,18 @@ Example flake.nix:
 }
 ```
 
+## Firmware
+
+You can install the necessary firmware to boot and the device tree blobs to
+recognize the peripherals by building the `.#firmware` package and then copying
+the results to the device's `/boot` partition:
+
+```sh
+nix build .#packages.aaarch64-linux.firmware
+# e.g. mount the CM4's /boot partition under /mnt/boot first
+cp result/* /mnt/boot
+```
+
 ## Hardware support
 
 ### PWM Fan

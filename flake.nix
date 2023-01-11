@@ -4,6 +4,8 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
 
+    nixpkgsDeviceOverlays.url = "github:NixOS/nixpkgs/bfd1c45e54bd9823b083c10537cf677462fc2c28";
+
     flake-compat = {
       url = "github:edolstra/flake-compat";
       flake = false;
@@ -17,10 +19,14 @@
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, pibox-os, ... }:
+  outputs = inputs@{ self, nixpkgs, flake-utils, pibox-os, ... }:
     let
       packagesFor = pkgs: import ./pkgs {
         inherit pkgs pibox-os;
+        # Remove once https://github.com/NixOS/nixpkgs/pull/205595 lands
+        pkgsPinned = import inputs.nixpkgsDeviceOverlays {
+          inherit (pkgs.hostPlatform) system;
+        };
       };
     in
     {
