@@ -17,9 +17,10 @@ let
   mkOverlay = name: text: {
     inherit name;
     filter = null;
-    dtboFile = runCommand "${name}-dtbo" {
-      nativeBuildInputs = [ dtc ];
-    } ''
+    dtboFile = runCommand "${name}-dtbo"
+      {
+        nativeBuildInputs = [ dtc ];
+      } ''
       dtc -I dts -O dtb -@ -o $out <<EOF
         ${text}
       EOF
