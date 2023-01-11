@@ -1,4 +1,4 @@
-{ pkgs, pibox-os, pkgsPinned }:
+{ pkgs, pibox-framebuffer, pibox-os, pkgsPinned }:
 
 rec {
   bcm2835 = pkgs.callPackage ./bcm2835.nix {
@@ -7,6 +7,10 @@ rec {
 
   firmware = pkgs.callPackage ./firmware.nix {
     inherit (pkgsPinned) deviceTree;
+  };
+
+  piboxFramebuffer = pkgs.callPackage ./framebuffer.nix {
+    inherit pibox-framebuffer;
   };
 
   pwmFan = pkgs.callPackage ./pwm-fan {

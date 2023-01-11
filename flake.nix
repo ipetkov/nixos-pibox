@@ -13,16 +13,21 @@
 
     flake-utils.url = "github:numtide/flake-utils";
 
+    pibox-framebuffer = {
+      url = "github:kubesail/pibox-framebuffer";
+      flake = false;
+    };
+
     pibox-os = {
       url = "github:kubesail/pibox-os";
       flake = false;
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, flake-utils, pibox-os, ... }:
+  outputs = inputs@{ self, nixpkgs, flake-utils, pibox-framebuffer, pibox-os, ... }:
     let
       packagesFor = pkgs: import ./pkgs {
-        inherit pkgs pibox-os;
+        inherit pkgs pibox-framebuffer pibox-os;
         # Remove once https://github.com/NixOS/nixpkgs/pull/205595 lands
         pkgsPinned = import inputs.nixpkgsDeviceOverlays {
           inherit (pkgs.hostPlatform) system;
