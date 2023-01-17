@@ -41,6 +41,8 @@
 
       nixosModules.default = { ... }: {
         imports = [
+          ./nixosModules/framebuffer.nix
+          ./nixosModules/kernel-params.nix
           ./nixosModules/pwm-fan.nix
         ];
       };

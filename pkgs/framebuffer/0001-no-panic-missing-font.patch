@@ -1,0 +1,18 @@
+diff --git a/pkg/framebuffer.go b/pkg/framebuffer.go
+index ade3db2..0453464 100644
+--- a/pkg/framebuffer.go
++++ b/pkg/framebuffer.go
+@@ -240,11 +240,11 @@ func (b *PiboxFrameBuffer) TextOnContext(dc *gg.Context, x float64, y float64, s
+ 	// dc.SetRGB(float64(c.R), float64(c.G), float64(c.B))
+ 	if bold {
+ 		if err := dc.LoadFontFace("/usr/share/fonts/truetype/piboto/Piboto-Bold.ttf", float64(size)); err != nil {
+-			panic(err)
++			//panic(err)
+ 		}
+ 	} else {
+ 		if err := dc.LoadFontFace("/usr/share/fonts/truetype/piboto/Piboto-Regular.ttf", float64(size)); err != nil {
+-			panic(err)
++			//panic(err)
+ 		}
+ 	}
+ 	dc.DrawStringWrapped(content, x, y, 0.5, 0.5, 240, 1.5, align)

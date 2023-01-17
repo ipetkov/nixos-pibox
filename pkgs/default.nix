@@ -9,7 +9,7 @@ rec {
     inherit (pkgsPinned) deviceTree;
   };
 
-  piboxFramebuffer = pkgs.callPackage ./framebuffer.nix {
+  framebuffer = pkgs.callPackage ./framebuffer {
     inherit pibox-framebuffer;
   };
 
