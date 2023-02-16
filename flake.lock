@@ -47,22 +47,6 @@
         "type": "github"
       }
     },
-    "nixpkgsDeviceOverlays": {
-      "locked": {
-        "lastModified": 1670731988,
-        "narHash": "sha256-7zN70Gp5KQoypPAYXzLhNT1Xt/h0TVhtHSECjx1hkkc=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "bfd1c45e54bd9823b083c10537cf677462fc2c28",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "bfd1c45e54bd9823b083c10537cf677462fc2c28",
-        "type": "github"
-      }
-    },
     "pibox-framebuffer": {
       "flake": false,
       "locked": {
@@ -100,7 +84,6 @@
         "flake-compat": "flake-compat",
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs",
-        "nixpkgsDeviceOverlays": "nixpkgsDeviceOverlays",
         "pibox-framebuffer": "pibox-framebuffer",
         "pibox-os": "pibox-os"
       }
