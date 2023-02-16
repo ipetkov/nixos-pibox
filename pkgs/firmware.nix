@@ -124,7 +124,7 @@ let
     ];
 
   finalDtb = deviceTree.applyOverlays
-    fwdir
+    (lib.sourceFilesBySuffices fwdir [ "bcm2711-rpi-cm4.dtb" ])
     (initializedDefaultOverlays ++ extraOverlays);
 in
 runCommand "firmware" { } ''
@@ -133,7 +133,7 @@ runCommand "firmware" { } ''
 
   cp ${raspberrypi-armstubs}/armstub8-gic.bin $out/armstub8-gic.bin
   cp ${ubootRaspberryPi4_64bit}/u-boot.bin    $out/u-boot-rpi4.bin
-  cp -r ${finalDtb}                           $out/
+  cp ${finalDtb}/bcm2711-rpi-cm4.dtb          $out/
   cp $fwdir/bootcode.bin                      $out/
   cp $fwdir/fixup*                            $out/
   cp $fwdir/start*                            $out/
