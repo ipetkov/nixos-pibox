@@ -31,7 +31,7 @@ jobs:
         extra_nix_config: |
           extra-platforms = aarch64-linux
     - name: install QEMU/binfmt
-      uses: docker/setup-qemu-action@v2
+      uses: docker/setup-qemu-action@v3
       with:
         image: tonistiigi/binfmt:latest
         platforms: "arm64"
