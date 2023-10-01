@@ -25,7 +25,7 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: cachix/install-nix-action@v22
       with:
         extra_nix_config: |
@@ -43,7 +43,7 @@ jobs:
   check-dead-code:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: cachix/install-nix-action@v22
     - uses: cachix/cachix-action@v12
       with:
@@ -54,7 +54,7 @@ jobs:
   check-fmt:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: cachix/install-nix-action@v22
     - name: check formatting
       run: nix fmt -- --check .
