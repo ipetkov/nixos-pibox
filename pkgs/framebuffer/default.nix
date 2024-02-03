@@ -1,6 +1,7 @@
 { buildGoModule
 , pibox-framebuffer
 , lib
+, vendorHash ? "sha256-3WIp/+dagzk4h6DPIe0tveTMtPqmTl6nXNhq6s2r7Ss="
 }:
 
 buildGoModule {
@@ -8,7 +9,7 @@ buildGoModule {
   version = "v21";
 
   src = pibox-framebuffer;
-  vendorSha256 = "sha256-+626pgKu9fj7W2wauq5kveEoHoBRTwgir9Z7HzkXZNs=";
+  inherit vendorHash;
 
   patches = [
     ./0001-no-panic-missing-font.patch
