@@ -34,7 +34,7 @@ Example flake.nix:
 
           # Enable the PWM fan and display stats service
           services.piboxPwmFan.enable = true;
-          services.framebuffer.enable = true;
+          services.piboxFrameBuffer.enable = true;
         })
       ];
     };
