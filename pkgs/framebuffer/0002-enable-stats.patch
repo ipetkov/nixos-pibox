@@ -1,0 +1,21 @@
+diff --git a/cmd/main.go b/cmd/main.go
+index dadc1a1..d8d06ed 100644
+--- a/cmd/main.go
++++ b/cmd/main.go
+@@ -6,7 +6,7 @@ import (
+ 	"net"
+ 	"net/http"
+ 	"os"
+-	// "time"
++	"time"
+ 
+ 	pfb "github.com/kubesail/pibox-framebuffer/pkg"
+ 	_ "github.com/kubesail/pibox-framebuffer/statik"
+@@ -38,6 +38,7 @@ func main() {
+ 		buffer.Splash()
+ 		// time.AfterFunc(6*time.Second, stats)
+ 		// time.AfterFunc(0*time.Second, buffer.Stats)
++		time.AfterFunc(6*time.Second, buffer.Stats)
+ 	} else {
+ 		fmt.Fprintf(os.Stderr, "Could not connect to framebuffer screen: %v\n", err)
+ 	}

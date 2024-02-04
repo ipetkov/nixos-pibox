@@ -13,6 +13,7 @@ buildGoModule {
 
   patches = [
     ./0001-no-panic-missing-font.patch
+    ./0002-enable-stats.patch
   ];
 
   postInstall = ''
