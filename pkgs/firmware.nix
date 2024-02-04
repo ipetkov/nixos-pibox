@@ -56,71 +56,6 @@ let
           };
         };
       '')
-
-      (mkOverlay "minipitft13-overlay" ''
-        /dts-v1/;
-        /plugin/;
-        / {
-          compatible = "brcm,bcm2711";
-          fragment@0 {
-            target = <&spi0>;
-            __overlay__ {
-              status = "okay";
-              spidev@0{
-                status = "disabled";
-              };
-              spidev@1{
-                status = "disabled";
-              };
-            };
-          };
-
-          fragment@1 {
-            target = <&gpio>;
-            __overlay__ {
-              pitft_pins: pitft_pins {
-                brcm,pins = <25>;
-                brcm,function = <1>; /* out */
-                brcm,pull = <0>; /* none */
-              };
-            };
-          };
-
-          fragment@2 {
-            target = <&spi0>;
-            __overlay__ {
-              /* needed to avoid dtc warning */
-              #address-cells = <1>;
-              #size-cells = <0>;
-
-              pitft: pitft@0{
-                compatible = "sitronix,st7789v";
-                reg = <0>;
-                pinctrl-names = "default";
-                pinctrl-0 = <&pitft_pins>;
-                spi-max-frequency = <32000000>;
-                rotate = <0>;
-                width = <240>;
-                height = <240>;
-                txbuflen = <32768>;
-                buswidth = <8>;
-                dc-gpios = <&gpio 25 0>;
-                led-gpios = <&gpio 26 0>;
-                debug = <0>;
-              };
-            };
-          };
-
-          __overrides__ {
-            speed =   <&pitft>,"spi-max-frequency:0";
-            rotate =  <&pitft>,"rotate:0";
-            width =   <&pitft>,"width:0";
-            height =  <&pitft>,"height:0";
-            fps =     <&pitft>,"fps:0";
-            debug =   <&pitft>,"debug:0";
-          };
-        };
-      '')
     ];
 
   finalDtb = deviceTree.applyOverlays
@@ -168,5 +103,9 @@ runCommand "firmware" { } ''
 
   # Force HDMI on so we don't allocate a tty on the LCD
   hdmi_force_hotplug=1
+
+  dtoverlay=spi0-1cs
+  dtoverlay=dwc2,dr_mode=host
+  dtparam=spi=on
   EOF
 ''

@@ -34,6 +34,7 @@ Example flake.nix:
 
           # Enable the PWM fan
           services.piboxPwmFan.enable = true;
+          services.framebuffer.enable = true;
         })
       ];
     };
@@ -52,6 +53,19 @@ nix build .#packages.aaarch64-linux.firmware
 # e.g. mount the CM4's /boot partition under /mnt/boot first
 cp result/* /mnt/boot
 ```
+
+### Display Notes
+
+As of February 2024 the framebuffer service has been rewritten to interface with
+the Pibox display via SPI (and not the previous fbtft driver). This requires
+updating the firmware files on the Pibox's `/boot` partition:
+
+```sh
+# Note that this will overwrite /boot/config.txt, so back up any changes there!
+cp -r $(nix build .#packages.aarch64-linux.firmware) /boot
+```
+
+This only needs to be done once.
 
 ## Hardware support
 
