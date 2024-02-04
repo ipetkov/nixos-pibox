@@ -1,10 +1,8 @@
-{ config, pkgs, lib, ... }:
+{ config, lib, ... }:
 
 let
   inherit (lib)
-    mkEnableOption
-    mkOption
-    types;
+    mkEnableOption;
 
   cfg = config.piboxKernelParams;
 in

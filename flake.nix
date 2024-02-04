@@ -22,14 +22,14 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, flake-utils, pibox-framebuffer, pibox-os, ... }:
+  outputs = { self, nixpkgs, flake-utils, pibox-framebuffer, pibox-os, ... }:
     let
       packagesFor = pkgs: import ./pkgs {
         inherit pkgs pibox-framebuffer pibox-os;
       };
     in
     {
-      overlays.default = final: prev: {
+      overlays.default = final: _prev: {
         pibox = packagesFor final;
       };
 

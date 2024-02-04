@@ -6,9 +6,7 @@
 , raspberrypi-armstubs
 , raspberrypifw
 , runCommand
-, stdenv
 , ubootRaspberryPi4_64bit
-, writeText
 }:
 
 let
