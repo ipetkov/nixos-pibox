@@ -47,8 +47,6 @@ jobs:
     - uses: actions/checkout@v4
     - uses: cachix/install-nix-action@v25
     - uses: DeterminateSystems/magic-nix-cache-action@v2
-      with:
-        name: deadnix
     - name: check for dead code
       run: nix run github:astro/deadnix -- .
 
