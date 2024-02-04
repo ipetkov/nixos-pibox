@@ -12,7 +12,7 @@ Example flake.nix:
 ```nix
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixos-pibox = {
       url = "github:ipetkov/nixos-pibox";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -32,7 +32,7 @@ Example flake.nix:
             # Add other overlays here
           ];
 
-          # Enable the PWM fan
+          # Enable the PWM fan and display stats service
           services.piboxPwmFan.enable = true;
           services.framebuffer.enable = true;
         })
@@ -88,6 +88,10 @@ If you have ideas on improving this please start a discussion!
   - default value: false
 * `service.piboxPwmFan.package`: the package to run as part of the service
   - default value; `pkgs.pibox.pwmFan`
+* `services.piboxFrameBuffer.enable`: enable or disable the display service
+  - default value: false
+* `service.piboxFrameBuffer.package`: the package to run as part of the service
+  - default value; `pkgs.pibox.framebuffer`
 
 
 [PiBox]: https://pibox.io/
