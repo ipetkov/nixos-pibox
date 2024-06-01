@@ -35,7 +35,7 @@ jobs:
       with:
         image: tonistiigi/binfmt:latest
         platforms: "arm64"
-    - uses: DeterminateSystems/magic-nix-cache-action@v4
+    - uses: DeterminateSystems/magic-nix-cache-action@v6
     - name: flake checks
       run: nix flake check --keep-going --print-build-logs
     - name: build packages
@@ -46,7 +46,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: cachix/install-nix-action@V27
-    - uses: DeterminateSystems/magic-nix-cache-action@v4
+    - uses: DeterminateSystems/magic-nix-cache-action@v6
     - name: check for dead code
       run: nix run github:astro/deadnix -- .
 
