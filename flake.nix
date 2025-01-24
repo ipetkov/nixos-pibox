@@ -22,7 +22,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, pibox-framebuffer, pibox-os, ... }:
+  outputs = { nixpkgs, flake-utils, pibox-framebuffer, pibox-os, ... }:
     let
       packagesFor = pkgs: import ./pkgs {
         inherit pkgs pibox-framebuffer pibox-os;
@@ -45,15 +45,18 @@
         pkgs = import nixpkgs {
           inherit system;
         };
+        inherit (pkgs) lib;
       in
       {
         formatter = pkgs.nixpkgs-fmt;
-      }) // flake-utils.lib.eachSystem [ "aarch64-linux" ] (system:
-      {
-        packages = packagesFor (import nixpkgs {
-          inherit system;
-        });
-        checks = self.packages.${system};
+        devShells.default = pkgs.mkShell {
+          nativeBuildInputs = [
+            pkgs.deadnix
+          ];
+        };
+      } // lib.optionalAttrs (system == "aarch64-linux") rec {
+        packages = packagesFor pkgs;
+        checks = packages;
       }
     );
 }

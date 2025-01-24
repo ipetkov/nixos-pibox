@@ -48,7 +48,7 @@ jobs:
     - uses: cachix/install-nix-action@v30
     - uses: DeterminateSystems/magic-nix-cache-action@v8
     - name: check for dead code
-      run: nix run github:astro/deadnix -- .
+      run: nix develop .# --command deadnix .
 
   check-fmt:
     runs-on: ubuntu-latest
