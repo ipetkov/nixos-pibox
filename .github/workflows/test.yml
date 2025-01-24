@@ -18,8 +18,6 @@ jobs:
     steps:
       - run: exit 1
     needs:
-      - check-dead-code
-      - check-fmt
       - tests
 
   tests:
@@ -35,25 +33,11 @@ jobs:
       with:
         image: tonistiigi/binfmt:latest
         platforms: "arm64"
-    - uses: DeterminateSystems/magic-nix-cache-action@v8
+    - name: check formatting
+      run: nix fmt -- --check .
+    - name: check for dead code
+      run: nix develop .# --command deadnix .
     - name: flake checks
       run: nix flake check --keep-going --print-build-logs
     - name: build packages
       run: nix build --keep-going --print-build-logs -f ./ci/packages.nix --argstr system aarch64-linux
-
-  check-dead-code:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - uses: cachix/install-nix-action@v30
-    - uses: DeterminateSystems/magic-nix-cache-action@v8
-    - name: check for dead code
-      run: nix develop .# --command deadnix .
-
-  check-fmt:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - uses: cachix/install-nix-action@v30
-    - name: check formatting
-      run: nix fmt -- --check .
