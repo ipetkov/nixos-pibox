@@ -16,7 +16,7 @@ jobs:
     - uses: cachix/install-nix-action@v31
     - name: Update flake.lock
       id: flakeupdate
-      uses: DeterminateSystems/update-flake-lock@v25
+      uses: DeterminateSystems/update-flake-lock@v27
       with:
         token: ${{ secrets.PAT_FLAKE_UPDATE }}
         branch: "automation/flake-update"
