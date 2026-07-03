@@ -1,7 +1,8 @@
-{ pibox-os
-, lib
-, libcap
-, stdenv
+{
+  pibox-os,
+  lib,
+  libcap,
+  stdenv,
 }:
 
 stdenv.mkDerivation {

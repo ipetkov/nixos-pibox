@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   inherit (lib)
@@ -6,7 +11,8 @@ let
     mkDefault
     mkEnableOption
     mkOption
-    types;
+    types
+    ;
 
   cfg = config.services.piboxFramebuffer;
 in

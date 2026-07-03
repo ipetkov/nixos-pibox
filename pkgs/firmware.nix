@@ -1,12 +1,13 @@
-{ defaultOverlays ? null # Set to `[]` to clear
-, deviceTree
-, dtc
-, extraOverlays ? [ ]
-, lib
-, raspberrypi-armstubs
-, raspberrypifw
-, runCommand
-, ubootRaspberryPi4_64bit
+{
+  defaultOverlays ? null, # Set to `[]` to clear
+  deviceTree,
+  dtc,
+  extraOverlays ? [ ],
+  lib,
+  raspberrypi-armstubs,
+  raspberrypifw,
+  runCommand,
+  ubootRaspberryPi4_64bit,
 }:
 
 let
@@ -15,50 +16,53 @@ let
   mkOverlay = name: text: {
     inherit name;
     filter = null;
-    dtboFile = runCommand "${name}-dtbo"
-      {
-        nativeBuildInputs = [ dtc ];
-      } ''
-      dtc -I dts -O dtb -@ -o $out <<EOF
-        ${text}
-      EOF
-    '';
+    dtboFile =
+      runCommand "${name}-dtbo"
+        {
+          nativeBuildInputs = [ dtc ];
+        }
+        ''
+          dtc -I dts -O dtb -@ -o $out <<EOF
+            ${text}
+          EOF
+        '';
   };
 
   initializedDefaultOverlays =
-    if defaultOverlays != null
-    then defaultOverlays
-    else [
-      (mkOverlay "pwm-overlay" ''
-        /dts-v1/;
-        /plugin/;
-        / {
-          compatible = "brcm,bcm2711";
-          fragment@0 {
-            target = <&gpio>;
-            __overlay__ {
-              pwm_pins: pwm_pins {
-                brcm,pins = <18>;
-                brcm,function = <2>; /* Alt5 */
+    if defaultOverlays != null then
+      defaultOverlays
+    else
+      [
+        (mkOverlay "pwm-overlay" ''
+          /dts-v1/;
+          /plugin/;
+          / {
+            compatible = "brcm,bcm2711";
+            fragment@0 {
+              target = <&gpio>;
+              __overlay__ {
+                pwm_pins: pwm_pins {
+                  brcm,pins = <18>;
+                  brcm,function = <2>; /* Alt5 */
+                };
+              };
+            };
+            fragment@1 {
+              target = <&pwm>;
+              __overlay__ {
+                pinctrl-names = "default";
+                assigned-clock-rates = <100000000>;
+                status = "okay";
+                pinctrl-0 = <&pwm_pins>;
               };
             };
           };
-          fragment@1 {
-            target = <&pwm>;
-            __overlay__ {
-              pinctrl-names = "default";
-              assigned-clock-rates = <100000000>;
-              status = "okay";
-              pinctrl-0 = <&pwm_pins>;
-            };
-          };
-        };
-      '')
-    ];
+        '')
+      ];
 
-  finalDtb = deviceTree.applyOverlays
-    (lib.sourceFilesBySuffices fwdir [ "bcm2711-rpi-cm4.dtb" ])
-    (initializedDefaultOverlays ++ extraOverlays);
+  finalDtb = deviceTree.applyOverlays (lib.sourceFilesBySuffices fwdir [ "bcm2711-rpi-cm4.dtb" ]) (
+    initializedDefaultOverlays ++ extraOverlays
+  );
 in
 runCommand "firmware" { } ''
   mkdir -p $out

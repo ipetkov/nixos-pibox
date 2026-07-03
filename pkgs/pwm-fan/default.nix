@@ -1,8 +1,9 @@
-{ bcm2835
-, pibox-os
-, lib
-, libcap
-, stdenv
+{
+  bcm2835,
+  pibox-os,
+  lib,
+  libcap,
+  stdenv,
 }:
 
 stdenv.mkDerivation {

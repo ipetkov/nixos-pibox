@@ -1,7 +1,8 @@
-{ buildGoModule
-, pibox-framebuffer
-, lib
-, vendorHash ? "sha256-3WIp/+dagzk4h6DPIe0tveTMtPqmTl6nXNhq6s2r7Ss="
+{
+  buildGoModule,
+  pibox-framebuffer,
+  lib,
+  vendorHash ? "sha256-3WIp/+dagzk4h6DPIe0tveTMtPqmTl6nXNhq6s2r7Ss=",
 }:
 
 buildGoModule {

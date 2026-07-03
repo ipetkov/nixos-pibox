@@ -34,7 +34,7 @@ jobs:
         image: tonistiigi/binfmt:latest
         platforms: "arm64"
     - name: check formatting
-      run: nix fmt -- --check .
+      run: nix fmt -- --ci
     - name: check for dead code
       run: nix develop .# --command deadnix .
     - name: flake checks

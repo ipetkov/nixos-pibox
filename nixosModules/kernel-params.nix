@@ -2,7 +2,8 @@
 
 let
   inherit (lib)
-    mkEnableOption;
+    mkEnableOption
+    ;
 
   cfg = config.piboxKernelParams;
 in
