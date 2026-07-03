@@ -60,10 +60,17 @@
       in
       {
         formatter = pkgs.nixfmt-tree;
-        devShells.default = pkgs.mkShell {
-          nativeBuildInputs = [
-            pkgs.deadnix
-          ];
+        devShells = {
+          default = pkgs.mkShell {
+            nativeBuildInputs = [
+              pkgs.deadnix
+            ];
+          };
+          zizmor = pkgs.mkShell {
+            packages = [
+              pkgs.zizmor
+            ];
+          };
         };
       }
       // lib.optionalAttrs (system == "aarch64-linux") rec {
