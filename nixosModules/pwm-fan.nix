@@ -1,11 +1,17 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   inherit (lib)
     mkDefault
     mkEnableOption
     mkOption
-    types;
+    types
+    ;
 
   cfg = config.services.piboxPwmFan;
 in

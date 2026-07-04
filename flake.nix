@@ -22,11 +22,20 @@
     };
   };
 
-  outputs = { nixpkgs, flake-utils, pibox-framebuffer, pibox-os, ... }:
+  outputs =
+    {
+      nixpkgs,
+      flake-utils,
+      pibox-framebuffer,
+      pibox-os,
+      ...
+    }:
     let
-      packagesFor = pkgs: import ./pkgs {
-        inherit pkgs pibox-framebuffer pibox-os;
-      };
+      packagesFor =
+        pkgs:
+        import ./pkgs {
+          inherit pkgs pibox-framebuffer pibox-os;
+        };
     in
     {
       overlays.default = final: _prev: {
@@ -40,7 +49,9 @@
           ./nixosModules/pwm-fan.nix
         ];
       };
-    } // flake-utils.lib.eachDefaultSystem (system:
+    }
+    // flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = import nixpkgs {
           inherit system;
@@ -48,13 +59,14 @@
         inherit (pkgs) lib;
       in
       {
-        formatter = pkgs.nixpkgs-fmt;
+        formatter = pkgs.nixfmt-tree;
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = [
             pkgs.deadnix
           ];
         };
-      } // lib.optionalAttrs (system == "aarch64-linux") rec {
+      }
+      // lib.optionalAttrs (system == "aarch64-linux") rec {
         packages = packagesFor pkgs;
         checks = packages;
       }

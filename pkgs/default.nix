@@ -1,4 +1,8 @@
-{ pkgs, pibox-framebuffer, pibox-os }:
+{
+  pkgs,
+  pibox-framebuffer,
+  pibox-os,
+}:
 
 rec {
   bcm2835 = pkgs.callPackage ./bcm2835.nix {
