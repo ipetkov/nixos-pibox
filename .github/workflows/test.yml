@@ -10,6 +10,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   tests-pass:
     name: all systems go
@@ -19,17 +23,21 @@ jobs:
       - run: exit 1
     needs:
       - tests
+      - zizmor
 
   tests:
+    name: run tests
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v7
-    - uses: cachix/install-nix-action@v31
+    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      with:
+        persist-credentials: false
+    - uses: cachix/install-nix-action@8aa03977d8d733052d78f4e008a241fd1dbf36b3 # v31.10.6
       with:
         extra_nix_config: |
           extra-platforms = aarch64-linux
     - name: install QEMU/binfmt
-      uses: docker/setup-qemu-action@v4
+      uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
       with:
         image: tonistiigi/binfmt:latest
         platforms: "arm64"
@@ -41,3 +49,23 @@ jobs:
       run: nix flake check --keep-going --print-build-logs
     - name: build packages
       run: nix build --keep-going --print-build-logs -f ./ci/packages.nix --argstr system aarch64-linux
+
+  zizmor:
+    name: run zizmor
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write # Required for upload-sarif (used by zizmor-action) to upload SARIF files.
+    steps:
+    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      with:
+        persist-credentials: false
+    - uses: cachix/install-nix-action@8aa03977d8d733052d78f4e008a241fd1dbf36b3 # v31.10.6
+    - name: Run zizmor 🌈
+      run: nix develop .#zizmor --command zizmor --format=sarif . >results.sarif 
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+    - name: Upload SARIF file
+      uses: github/codeql-action/upload-sarif@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2
+      with:
+        sarif_file: results.sarif
+        category: zizmor
