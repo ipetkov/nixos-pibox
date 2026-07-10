@@ -9,8 +9,6 @@
       flake = false;
     };
 
-    flake-utils.url = "github:numtide/flake-utils";
-
     pibox-framebuffer = {
       url = "github:kubesail/pibox-framebuffer";
       flake = false;
@@ -25,7 +23,6 @@
   outputs =
     {
       nixpkgs,
-      flake-utils,
       pibox-framebuffer,
       pibox-os,
       ...
@@ -36,6 +33,32 @@
         import ./pkgs {
           inherit pkgs pibox-framebuffer pibox-os;
         };
+
+      eachSystem =
+        systems: f:
+        let
+          # Merge together the outputs for all systems.
+          op =
+            attrs: system:
+            let
+              ret = f system;
+              op =
+                attrs: key:
+                attrs
+                // {
+                  ${key} = (attrs.${key} or { }) // {
+                    ${system} = ret.${key};
+                  };
+                };
+            in
+            builtins.foldl' op attrs (builtins.attrNames ret);
+        in
+        builtins.foldl' op { } systems;
+
+      eachDefaultSystem = eachSystem [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
     in
     {
       overlays.default = final: _prev: {
@@ -50,7 +73,7 @@
         ];
       };
     }
-    // flake-utils.lib.eachDefaultSystem (
+    // eachDefaultSystem (
       system:
       let
         pkgs = import nixpkgs {
